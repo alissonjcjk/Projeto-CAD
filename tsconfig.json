@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/components/FormContainer.jsx"
+    "src/app/components/containers/FormContainer.jsx"
   ],
   "exclude": ["node_modules"]
 }

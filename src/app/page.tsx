@@ -1,5 +1,5 @@
 import EmpresaForm from "./components/EmpresaForm";
-import FormContainer from "./components/FormContainer";
+import FormContainer from "./components/containers/FormContainer";
 export default function Home() {
   return (
     <FormContainer>

@@ -1,4 +1,6 @@
 "use client";
+import StyleFillable from "./StyleFillable";
+import StyleTitle from "./styles/StyleTitle";
 import { useState } from "react";
 
 function EmpresaForm({ className = "" }) {
@@ -25,13 +27,67 @@ function EmpresaForm({ className = "" }) {
     }));
   };
 
+  const handleCNPJChange = (e) => {
+    const formatted = formatCNPJ(e.target.value);
+    setFormData({ ...formData, cnpj: formatted });
+  };
+
+  const handleTelefoneChange = (e) => {
+    const formatted = formatTelefone(e.target.value);
+    setFormData({ ...formData, telefone: formatted });
+  };
+
+  const formatTelefone = (value) => {
+    if (!value) return value;
+
+    // Remove tudo que não é dígito
+    const nums = value.replace(/\D/g, "");
+
+    // Aplica a máscara (81)9 9999-9999
+    if (nums.length <= 2) return `(${nums}`;
+    if (nums.length <= 3) return `(${nums.slice(0, 2)})${nums.slice(2)}`;
+    if (nums.length <= 7)
+      return `(${nums.slice(0, 2)})${nums.slice(2, 3)} ${nums.slice(3)}`;
+    if (nums.length <= 11)
+      return `(${nums.slice(0, 2)})${nums.slice(2, 3)} ${nums.slice(
+        3,
+        7
+      )}-${nums.slice(7)}`;
+    return `(${nums.slice(0, 2)})${nums.slice(2, 3)} ${nums.slice(
+      3,
+      7
+    )}-${nums.slice(7, 11)}`;
+  };
+
+  const formatCNPJ = (value) => {
+    if (!value) return value;
+
+    // Remove tudo que não é dígito
+    const nums = value.replace(/\D/g, "");
+
+    // Aplica a máscara 99.999.999/9999-99
+    if (nums.length <= 2) return nums;
+    if (nums.length <= 5) return `${nums.slice(0, 2)}.${nums.slice(2)}`;
+    if (nums.length <= 8)
+      return `${nums.slice(0, 2)}.${nums.slice(2, 5)}.${nums.slice(5)}`;
+    if (nums.length <= 12)
+      return `${nums.slice(0, 2)}.${nums.slice(2, 5)}.${nums.slice(
+        5,
+        8
+      )}/${nums.slice(8)}`;
+    return `${nums.slice(0, 2)}.${nums.slice(2, 5)}.${nums.slice(
+      5,
+      8
+    )}/${nums.slice(8, 12)}-${nums.slice(12, 14)}`;
+  };
+
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.nomeEmpresa)
+    if (!formData.nomeEmpresa.trim())
       newErrors.nomeEmpresa = "Nome da empresa é obrigatório";
     if (!formData.cnpj) newErrors.cnpj = "CNPJ é obrigatório";
-    if (!formData.email) newErrors.email = "Email é obrigatório";
+    if (!formData.email.trim()) newErrors.email = "Email é obrigatório";
     if (!formData.telefone) newErrors.telefone = "Telefone é obrigatório";
     if (formData.senha !== formData.confirmarSenha) {
       newErrors.confirmarSenha = "As senhas não coincidem";
@@ -67,9 +123,7 @@ function EmpresaForm({ className = "" }) {
         {/* Seção de Informações Básicas */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Nome da Empresa *
-            </label>
+            <StyleTitle>Nome da Empresa *</StyleTitle>
             <input
               type="text"
               name="nomeEmpresa"
@@ -85,15 +139,12 @@ function EmpresaForm({ className = "" }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              CNPJ *
-            </label>
+            <StyleTitle>CNPJ *</StyleTitle>
             <input
               type="text"
-              name="cnpj"
               value={formData.cnpj}
-              onChange={handleChange}
-              placeholder="00.000.000/0000-00"
+              onChange={handleCNPJChange}
+              placeholder="99.999.999/9999-99"
               className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border ${
                 errors.cnpj ? "border-red-500" : ""
               }`}
@@ -107,9 +158,7 @@ function EmpresaForm({ className = "" }) {
         {/* Contato */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email *
-            </label>
+            <StyleTitle>Email *</StyleTitle>
             <input
               type="email"
               name="email"
@@ -125,15 +174,12 @@ function EmpresaForm({ className = "" }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Telefone *
-            </label>
+            <StyleTitle>Telefone *</StyleTitle>
             <input
-              type="tel"
-              name="telefone"
+              type="text"
               value={formData.telefone}
-              onChange={handleChange}
-              placeholder="(00) 00000-0000"
+              onChange={handleTelefoneChange}
+              placeholder="(81)9 9999-9999"
               className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border ${
                 errors.telefone ? "border-red-500" : ""
               }`}
@@ -146,9 +192,7 @@ function EmpresaForm({ className = "" }) {
 
         {/* Endereço */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Endereço Completo
-          </label>
+          <StyleTitle>Endereço Completo</StyleTitle>
           <input
             type="text"
             name="endereco"
@@ -161,9 +205,7 @@ function EmpresaForm({ className = "" }) {
         {/* Ramo e Responsável */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Ramo de Atividade
-            </label>
+            <StyleTitle>Ramo de Atividade</StyleTitle>
             <select
               name="ramoAtividade"
               value={formData.ramoAtividade}
@@ -180,9 +222,7 @@ function EmpresaForm({ className = "" }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Responsável
-            </label>
+            <StyleTitle>Responsável</StyleTitle>
             <input
               type="text"
               name="responsavel"
@@ -194,11 +234,9 @@ function EmpresaForm({ className = "" }) {
         </div>
 
         {/* Senha */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <StyleFillable>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Senha
-            </label>
+            <StyleTitle>Senha</StyleTitle>
             <input
               type="password"
               name="senha"
@@ -209,9 +247,7 @@ function EmpresaForm({ className = "" }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Confirmar Senha
-            </label>
+            <StyleTitle>Confirmar Senha</StyleTitle>
             <input
               type="password"
               name="confirmarSenha"
@@ -227,7 +263,7 @@ function EmpresaForm({ className = "" }) {
               </p>
             )}
           </div>
-        </div>
+        </StyleFillable>
 
         {/* Termos e Condições */}
         <div className="flex items-start">
@@ -241,9 +277,9 @@ function EmpresaForm({ className = "" }) {
             />
           </div>
           <div className="ml-3 text-sm">
-            <label htmlFor="terms" className="font-medium text-gray-700">
+            <StyleTitle htmlFor="terms" className="font-medium text-gray-700">
               Concordo com os termos e condições
-            </label>
+            </StyleTitle>
           </div>
         </div>
 
