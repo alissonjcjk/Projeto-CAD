@@ -8,8 +8,9 @@ function EmpresaForm({ className = "" }) {
     nomeEmpresa: "",
     cnpj: "",
     email: "",
+    nColaboradores: "",
     telefone: "",
-    endereco: "",
+    razao: "",
     ramoAtividade: "",
     responsavel: "",
     senha: "",
@@ -116,19 +117,20 @@ function EmpresaForm({ className = "" }) {
   return (
     <div className={`bg-white rounded-lg shadow-md p-6 ${className}`}>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">
-        Cadastro de Empresa
+        Cadastrar Empresa parceira
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Seção de Informações Básicas */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <StyleTitle>Nome da Empresa *</StyleTitle>
+            <StyleTitle>Nome fantasia da empresa *</StyleTitle>
             <input
               type="text"
               name="nomeEmpresa"
               value={formData.nomeEmpresa}
               onChange={handleChange}
+              placeholder="Nome como a empresa é conhecida publicamente"
               className={`mt-1 block w-full rounded-md border-gray-300 text-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2 border ${
                 errors.nomeEmpresa ? "border-red-500" : ""
               }`}
@@ -158,12 +160,13 @@ function EmpresaForm({ className = "" }) {
         {/* Contato */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <StyleTitle>Email *</StyleTitle>
+            <StyleTitle>Email corporativo de contato *</StyleTitle>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Ex: ana.souza@empresa.com"
               className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border ${
                 errors.email ? "border-red-500" : ""
               }`}
@@ -192,25 +195,25 @@ function EmpresaForm({ className = "" }) {
 
         {/* Endereço */}
         <div>
-          <StyleTitle>Endereço Completo</StyleTitle>
+          <StyleTitle>Razão social (opcional)</StyleTitle>
           <input
             type="text"
-            name="endereco"
-            value={formData.endereco}
+            name="razao"
+            value={formData.razao}
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
           />
         </div>
 
-        {/* Ramo e Responsável */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Ramo, Responsável e número de colaboradores */}
+        <div className="grid md:grid-cols-3">
           <div>
             <StyleTitle>Ramo de Atividade</StyleTitle>
             <select
               name="ramoAtividade"
               value={formData.ramoAtividade}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
+              className="mt-1 block w-9/12 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
             >
               <option value="">Selecione...</option>
               <option value="alimentos">Alimentos</option>
@@ -220,6 +223,23 @@ function EmpresaForm({ className = "" }) {
               <option value="outros">Outros</option>
             </select>
           </div>
+            
+          <div>
+            <StyleTitle>Número de colaboradores</StyleTitle>
+            <select
+              name="nColaboradores"
+              value={formData.nColaboradores}
+              onChange={handleChange}
+              className="mt-1 block w-10/12 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
+            >
+              <option value="">Selecione...</option>
+              <option value="ate10">Entre 1-10</option>
+              <option value="ate20">Entre 11-20</option>
+              <option value="ate30">Entre 21-30</option>
+              <option value="maior30">maior que 30</option>
+            </select>
+          </div>
+            
 
           <div>
             <StyleTitle>Responsável</StyleTitle>
