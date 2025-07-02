@@ -1,0 +1,90 @@
+import React, { useState } from "react";
+import CheckboxWithImage from "./components/CheckboxWithImage";
+
+const EmpresaForm = () => {
+  // Lista de opções com imagens
+  const checkboxOptions = [
+    {
+      id: "terms",
+      name: "terms",
+      label: "Concordo com os termos e condições",
+      imageUrl: "/images/terms-icon.png", // Caminho para a imagem
+      required: true,
+    },
+    {
+      id: "newsletter",
+      name: "newsletter",
+      label: "Desejo receber newsletter",
+      imageUrl: "/images/newsletter-icon.png",
+    },
+    {
+      id: "notifications",
+      name: "notifications",
+      label: "Receber notificações",
+      imageUrl: "/images/notifications-icon.png",
+      disabled: true,
+    },
+    // Adicione mais opções conforme necessário
+  ];
+
+  // Estado para armazenar as seleções
+  const [selectedOptions, setSelectedOptions] = useState(
+    checkboxOptions.reduce((acc, option) => {
+      acc[option.name] = false;
+      return acc;
+    }, {})
+  );
+
+  // Manipulador de mudança
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+  };
+
+  // Manipulador de envio
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Opções selecionadas:", selectedOptions);
+    // Processar os dados aqui
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="p-6 max-w-md mx-auto bg-white rounded-lg shadow"
+    >
+      <h2 className="text-xl font-bold mb-6 text-gray-800">
+        Selecione as opções
+      </h2>
+
+      <div className="space-y-4">
+        {checkboxOptions.map((option) => (
+          <CheckboxWithImage
+            key={option.id}
+            id={option.id}
+            name={option.name}
+            label={option.label}
+            imageUrl={option.imageUrl}
+            checked={selectedOptions[option.name]}
+            onChange={handleCheckboxChange}
+            required={option.required}
+            disabled={option.disabled}
+            className="p-3 hover:bg-gray-50 rounded-lg transition"
+          />
+        ))}
+      </div>
+
+      <button
+        type="submit"
+        className="mt-6 w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+      >
+        Confirmar
+      </button>
+    </form>
+  );
+};
+
+export default EmpresaForm;

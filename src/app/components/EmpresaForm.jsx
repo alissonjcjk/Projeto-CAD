@@ -1,6 +1,7 @@
 "use client";
 import StyleFillable from "./StyleFillable";
 import StyleTitle from "./styles/StyleTitle";
+import OdsImages from "./OdsImage";
 import { useState } from "react";
 
 function EmpresaForm({ className = "" }) {
@@ -16,6 +17,123 @@ function EmpresaForm({ className = "" }) {
     senha: "",
     confirmarSenha: "",
   });
+
+  const OdsImageOptions = [
+    {
+      id: "1",
+      name: "1",
+      require: true,
+    },
+    {
+      id: "2",
+      name: "2",
+      require: true,
+    },
+    {
+      id: "3",
+      name: "3",
+      require: true,
+    },
+    {
+      id: "4",
+      name: "4",
+      require: true,
+    },
+    {
+      id: "5",
+      name: "5",
+      require: true,
+    },
+    {
+      id: "6",
+      name: "6",
+      require: true,
+    },
+    {
+      id: "7",
+      name: "7",
+      require: true,
+    },
+    {
+      id: "7",
+      name: "7",
+      require: true,
+    },
+    {
+      id: "8",
+      name: "8",
+      require: true,
+    },
+    {
+      id: "9",
+      name: "9",
+      require: true,
+    },
+    {
+      id: "10",
+      name: "10",
+      require: true,
+    },
+    {
+      id: "11",
+      name: "11",
+      require: true,
+    },
+    {
+      id: "12",
+      name: "12",
+      require: true,
+    },
+    {
+      id: "13",
+      name: "13",
+      require: true,
+    },
+    {
+      id: "14",
+      name: "14",
+      require: true,
+    },
+    {
+      id: "15",
+      name: "15",
+      require: true,
+    },
+    {
+      id: "16",
+      name: "16",
+      require: true,
+    },
+    {
+      id: "17",
+      name: "17",
+      require: true,
+    },
+  ];
+  // armazena as selecoes de ods
+  const [selectedODS, setSelectedODS] = useState(() => {
+    // Inicializa todas as opcoes como false
+    const inicialState = {};
+    OdsImageOptions.forEach((option) => {
+      inicialState[option.name] = false;
+    });
+    return inicialState;
+  });
+
+  const handleOdsImagesChange = (e) => {
+    const { name, checked } = e.target;
+    setSelectedODS((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+  };
+
+  // funcao para enviar as opcoes selecionadas
+  const handleSubmitODS = (e) => {
+    e.preventDefault();
+    console.log("Opções selecionadas:", selectedODS);
+    // aqui pode enviar as opcoes para a api
+  };
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -223,7 +341,7 @@ function EmpresaForm({ className = "" }) {
               <option value="outros">Outros</option>
             </select>
           </div>
-            
+
           <div>
             <StyleTitle>Número de colaboradores</StyleTitle>
             <select
@@ -239,7 +357,6 @@ function EmpresaForm({ className = "" }) {
               <option value="maior30">maior que 30</option>
             </select>
           </div>
-            
 
           <div>
             <StyleTitle>Responsável</StyleTitle>
@@ -284,6 +401,30 @@ function EmpresaForm({ className = "" }) {
             )}
           </div>
         </StyleFillable>
+        <h1 className="font-bold text-2xl text-gray-800 ">
+          ODS da ONU mais alinhadas com as causas da empresa
+          <h2 className="font-medium text-gray-500">
+            selecione até 5 causas principais
+          </h2>
+        </h1>
+
+        <form
+          onSubmit={handleSubmitODS}
+          className="max-w-md mx-auto p-6 bg-white rounded-md shadow "
+        >
+          <div className="space-y-3 mb-3">
+            {OdsImageOptions.map((option) => (
+              <OdsImages
+                key={option.id}
+                id={option.id}
+                name={option.name}
+                checked={selectedODS[option.name]}
+                onChange={handleOdsImagesChange}
+                required={option.require}
+              />
+            ))}
+          </div>
+        </form>
 
         {/* Termos e Condições */}
         <div className="flex items-start">
