@@ -16,11 +16,7 @@ const OdsImages = ({
     <div className={`flex items-start ${className}`}>
       {/* Container da imagem */}
       <div className="mr-3 flex-shrink-0">
-        <img
-          src={imageUrl}
-          alt={imageAlt}
-          className="h-8 w-8 rounded-full object-cover"
-        />
+        <img src={imageUrl} alt={imageAlt} className="h-15 w-15 object-cover" />
       </div>
 
       {/* Checkbox e label */}

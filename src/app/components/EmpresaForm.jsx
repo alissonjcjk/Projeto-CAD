@@ -1,8 +1,19 @@
 "use client";
 import StyleFillable from "./StyleFillable";
 import StyleTitle from "./styles/StyleTitle";
-import OdsImages from "./OdsImage";
+import OdsImages from "./OdsImages";
 import { useState } from "react";
+
+const OdsImageOptions = Array.from({ length: 17 }, (_, i) => ({
+  id: String(i + 1),
+  name: String(i + 1), // Certifique-se de que 'name' existe
+  require: true,
+}));
+
+const initialODSState = OdsImageOptions.reduce((acc, option) => {
+  acc[option.name] = false;
+  return acc;
+});
 
 function EmpresaForm({ className = "" }) {
   const [formData, setFormData] = useState({
@@ -18,106 +29,108 @@ function EmpresaForm({ className = "" }) {
     confirmarSenha: "",
   });
 
-  const OdsImageOptions = [
-    {
-      id: "1",
-      name: "1",
-      require: true,
-    },
-    {
-      id: "2",
-      name: "2",
-      require: true,
-    },
-    {
-      id: "3",
-      name: "3",
-      require: true,
-    },
-    {
-      id: "4",
-      name: "4",
-      require: true,
-    },
-    {
-      id: "5",
-      name: "5",
-      require: true,
-    },
-    {
-      id: "6",
-      name: "6",
-      require: true,
-    },
-    {
-      id: "7",
-      name: "7",
-      require: true,
-    },
-    {
-      id: "7",
-      name: "7",
-      require: true,
-    },
-    {
-      id: "8",
-      name: "8",
-      require: true,
-    },
-    {
-      id: "9",
-      name: "9",
-      require: true,
-    },
-    {
-      id: "10",
-      name: "10",
-      require: true,
-    },
-    {
-      id: "11",
-      name: "11",
-      require: true,
-    },
-    {
-      id: "12",
-      name: "12",
-      require: true,
-    },
-    {
-      id: "13",
-      name: "13",
-      require: true,
-    },
-    {
-      id: "14",
-      name: "14",
-      require: true,
-    },
-    {
-      id: "15",
-      name: "15",
-      require: true,
-    },
-    {
-      id: "16",
-      name: "16",
-      require: true,
-    },
-    {
-      id: "17",
-      name: "17",
-      require: true,
-    },
-  ];
+  // const OdsImageOptions = [
+  //   {
+  //     id: "1",
+  //     name: "1",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "2",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "3",
+  //     name: "3",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "4",
+  //     name: "4",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "5",
+  //     name: "5",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "6",
+  //     name: "6",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "7",
+  //     name: "7",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "8",
+  //     name: "8",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "9",
+  //     name: "9",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "10",
+  //     name: "10",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "11",
+  //     name: "11",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "12",
+  //     name: "12",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "13",
+  //     name: "13",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "14",
+  //     name: "14",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "15",
+  //     name: "15",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "16",
+  //     name: "16",
+  //     require: true,
+  //   },
+  //   {
+  //     id: "17",
+  //     name: "17",
+  //     require: true,
+  //   },
+  // ];
   // armazena as selecoes de ods
+  // const [selectedODS, setSelectedODS] = useState(() => {
+  //   // Inicializa todas as opcoes como false
+  //   const inicialState = {};
+  //   OdsImageOptions.forEach((option) => {
+  //     inicialState[option.name] = false;
+  //   });
+  //   return inicialState;
+  // });
   const [selectedODS, setSelectedODS] = useState(() => {
-    // Inicializa todas as opcoes como false
-    const inicialState = {};
-    OdsImageOptions.forEach((option) => {
-      inicialState[option.name] = false;
-    });
-    return inicialState;
+    const initialState = {};
+    for (let i = 1; i <= 17; i++) {
+      initialState[i] = false; // Inicializa todos como false
+    }
+    return initialState;
   });
 
   const handleOdsImagesChange = (e) => {
@@ -126,13 +139,6 @@ function EmpresaForm({ className = "" }) {
       ...prev,
       [name]: checked,
     }));
-  };
-
-  // funcao para enviar as opcoes selecionadas
-  const handleSubmitODS = (e) => {
-    e.preventDefault();
-    console.log("Opções selecionadas:", selectedODS);
-    // aqui pode enviar as opcoes para a api
   };
 
   const [errors, setErrors] = useState({});
@@ -202,6 +208,7 @@ function EmpresaForm({ className = "" }) {
 
   const validate = () => {
     const newErrors = {};
+    const selectCount = Object.values(selectedODS).filter(Boolean).length;
 
     if (!formData.nomeEmpresa.trim())
       newErrors.nomeEmpresa = "Nome da empresa é obrigatório";
@@ -211,6 +218,9 @@ function EmpresaForm({ className = "" }) {
     if (formData.senha !== formData.confirmarSenha) {
       newErrors.confirmarSenha = "As senhas não coincidem";
     }
+    if (selectCount > 5) {
+      newErrors.ods = "Selecione no máximo 5 ODS";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -219,9 +229,10 @@ function EmpresaForm({ className = "" }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
+      // aqui pode enviar as opcoes para a api
+      console.log("Opções selecionadas:", selectedODS);
       setIsSubmitting(true);
       try {
-        // API
         console.log("Dados enviados:", formData);
         alert("Cadastro realizado com sucesso!");
       } catch (error) {
@@ -237,6 +248,8 @@ function EmpresaForm({ className = "" }) {
       <h2 className="text-2xl font-bold text-gray-800 mb-6">
         Cadastrar Empresa parceira
       </h2>
+
+      {errors.ods && <p className="mt-1 text-sm text-red-600">{errors.ods} </p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Seção de Informações Básicas */}
@@ -401,30 +414,34 @@ function EmpresaForm({ className = "" }) {
             )}
           </div>
         </StyleFillable>
-        <h1 className="font-bold text-2xl text-gray-800 ">
-          ODS da ONU mais alinhadas com as causas da empresa
-          <h2 className="font-medium text-gray-500">
+        <div>
+          <h1 className="font-bold text-2xl text-gray-800">
+            ODS da ONU mais alinhadas com as causas da empresa
+          </h1>
+          <p className="font-medium text-gray-500">
             selecione até 5 causas principais
-          </h2>
-        </h1>
+          </p>
+        </div>
 
-        <form
-          onSubmit={handleSubmitODS}
-          className="max-w-md mx-auto p-6 bg-white rounded-md shadow "
-        >
-          <div className="space-y-3 mb-3">
+        {/* recebe as informações ods */}
+        <div className="max-h-md max-w-full p-6 bg-white rounded-md shadow">
+          <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
             {OdsImageOptions.map((option) => (
               <OdsImages
                 key={option.id}
                 id={option.id}
                 name={option.name}
+                imageUrl={`./images/SDG-${option.name}.png`}
                 checked={selectedODS[option.name]}
                 onChange={handleOdsImagesChange}
-                required={option.require}
+                disabled={
+                  !selectedODS[option.name] &&
+                  Object.values(selectedODS).filter(Boolean).length >= 5
+                }
               />
             ))}
           </div>
-        </form>
+        </div>
 
         {/* Termos e Condições */}
         <div className="flex items-start">
