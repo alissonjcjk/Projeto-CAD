@@ -4,9 +4,13 @@ import StyleTitle from "./styles/StyleTitle";
 import OdsImages from "./OdsImages";
 import { useState } from "react";
 
+// Esse método cria um novo array apartir de um objeto iterável
+// OBS: isso foi super importante fazer, pois colocando o objeto diretamente em EmpresaForm, a cada atualização da TemplateContext, iria recriar
+// todas as ods's e o useState, o que diminuiria muito o desempenho do programa final, mas isso aqui embaixo so é
+// possível porque as ODS's são estáticas!!!
 const OdsImageOptions = Array.from({ length: 17 }, (_, i) => ({
   id: String(i + 1),
-  name: String(i + 1), // Certifique-se de que 'name' existe
+  name: String(i + 1),
   require: true,
 }));
 
@@ -16,6 +20,7 @@ const initialODSState = OdsImageOptions.reduce((acc, option) => {
 });
 
 function EmpresaForm({ className = "" }) {
+  // formData é um objeto que armazna todos os dados do formulário
   const [formData, setFormData] = useState({
     nomeEmpresa: "",
     cnpj: "",
@@ -28,103 +33,6 @@ function EmpresaForm({ className = "" }) {
     senha: "",
     confirmarSenha: "",
   });
-
-  // const OdsImageOptions = [
-  //   {
-  //     id: "1",
-  //     name: "1",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "2",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "3",
-  //     name: "3",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "4",
-  //     name: "4",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "5",
-  //     name: "5",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "6",
-  //     name: "6",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "7",
-  //     name: "7",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "8",
-  //     name: "8",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "9",
-  //     name: "9",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "10",
-  //     name: "10",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "11",
-  //     name: "11",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "12",
-  //     name: "12",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "13",
-  //     name: "13",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "14",
-  //     name: "14",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "15",
-  //     name: "15",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "16",
-  //     name: "16",
-  //     require: true,
-  //   },
-  //   {
-  //     id: "17",
-  //     name: "17",
-  //     require: true,
-  //   },
-  // ];
-  // armazena as selecoes de ods
-  // const [selectedODS, setSelectedODS] = useState(() => {
-  //   // Inicializa todas as opcoes como false
-  //   const inicialState = {};
-  //   OdsImageOptions.forEach((option) => {
-  //     inicialState[option.name] = false;
-  //   });
-  //   return inicialState;
-  // });
   const [selectedODS, setSelectedODS] = useState(() => {
     const initialState = {};
     for (let i = 1; i <= 17; i++) {
@@ -168,7 +76,7 @@ function EmpresaForm({ className = "" }) {
     // Remove tudo que não é dígito
     const nums = value.replace(/\D/g, "");
 
-    // Aplica a máscara (81)9 9999-9999
+    // Só aceita essa forma: (81)9 9999-9999
     if (nums.length <= 2) return `(${nums}`;
     if (nums.length <= 3) return `(${nums.slice(0, 2)})${nums.slice(2)}`;
     if (nums.length <= 7)
@@ -186,11 +94,9 @@ function EmpresaForm({ className = "" }) {
 
   const formatCNPJ = (value) => {
     if (!value) return value;
-
-    // Remove tudo que não é dígito
     const nums = value.replace(/\D/g, "");
 
-    // Aplica a máscara 99.999.999/9999-99
+    // Só pode essa forma: 99.999.999/9999-99
     if (nums.length <= 2) return nums;
     if (nums.length <= 5) return `${nums.slice(0, 2)}.${nums.slice(2)}`;
     if (nums.length <= 8)
@@ -208,13 +114,23 @@ function EmpresaForm({ className = "" }) {
 
   const validate = () => {
     const newErrors = {};
+
+    // Conta quantos ods foram selecionados
     const selectCount = Object.values(selectedODS).filter(Boolean).length;
 
+    // let selectCount = 0;
+    // const values = Object.values(selectedODS);
+    // for(let i=0; i<values.length;i++){
+    //   if(values[i]) selectCount++;
+    // }
+
+    // Atribui os erros para cada variável
     if (!formData.nomeEmpresa.trim())
       newErrors.nomeEmpresa = "Nome da empresa é obrigatório";
     if (!formData.cnpj) newErrors.cnpj = "CNPJ é obrigatório";
     if (!formData.email.trim()) newErrors.email = "Email é obrigatório";
     if (!formData.telefone) newErrors.telefone = "Telefone é obrigatório";
+    if (!formData.senha.trim()) newErrors.senha = "A senha é obrigatória";
     if (formData.senha !== formData.confirmarSenha) {
       newErrors.confirmarSenha = "As senhas não coincidem";
     }
@@ -226,13 +142,15 @@ function EmpresaForm({ className = "" }) {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Campo de envio dos dados
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      // aqui pode enviar as opcoes para a api
       console.log("Opções selecionadas:", selectedODS);
       setIsSubmitting(true);
       try {
+        // aqui pode enviar as opcoes para a api
+        // await axios.post("...",formData);
         console.log("Dados enviados:", formData);
         alert("Cadastro realizado com sucesso!");
       } catch (error) {
@@ -248,12 +166,9 @@ function EmpresaForm({ className = "" }) {
       <h2 className="text-2xl font-bold text-gray-800 mb-6">
         Cadastrar Empresa parceira
       </h2>
-
-      {errors.ods && <p className="mt-1 text-sm text-red-600">{errors.ods} </p>}
-
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Seção de Informações Básicas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <StyleFillable>
           <div>
             <StyleTitle>Nome fantasia da empresa *</StyleTitle>
             <input
@@ -286,10 +201,10 @@ function EmpresaForm({ className = "" }) {
               <p className="mt-1 text-sm text-red-600">{errors.cnpj}</p>
             )}
           </div>
-        </div>
+        </StyleFillable>
 
         {/* Contato */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <StyleFillable>
           <div>
             <StyleTitle>Email corporativo de contato *</StyleTitle>
             <input
@@ -322,7 +237,7 @@ function EmpresaForm({ className = "" }) {
               <p className="mt-1 text-sm text-red-600">{errors.telefone}</p>
             )}
           </div>
-        </div>
+        </StyleFillable>
 
         {/* Endereço */}
         <div>
@@ -337,14 +252,14 @@ function EmpresaForm({ className = "" }) {
         </div>
 
         {/* Ramo, Responsável e número de colaboradores */}
-        <div className="grid md:grid-cols-3">
+        <div className="grid md:grid-cols-3 gap-4">
           <div>
             <StyleTitle>Ramo de Atividade</StyleTitle>
             <select
               name="ramoAtividade"
               value={formData.ramoAtividade}
               onChange={handleChange}
-              className="mt-1 block w-9/12 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
             >
               <option value="">Selecione...</option>
               <option value="alimentos">Alimentos</option>
@@ -361,7 +276,7 @@ function EmpresaForm({ className = "" }) {
               name="nColaboradores"
               value={formData.nColaboradores}
               onChange={handleChange}
-              className="mt-1 block w-10/12 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
             >
               <option value="">Selecione...</option>
               <option value="ate10">Entre 1-10</option>
@@ -386,18 +301,23 @@ function EmpresaForm({ className = "" }) {
         {/* Senha */}
         <StyleFillable>
           <div>
-            <StyleTitle>Senha</StyleTitle>
+            <StyleTitle>Senha*</StyleTitle>
             <input
               type="password"
               name="senha"
               value={formData.senha}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border ${
+                errors.senha ? "border-red-500" : ""
+              }`}
             />
+            {errors.senha && (
+              <p className="mt-1 text-sm text-red-600">{errors.senha}</p>
+            )}
           </div>
 
           <div>
-            <StyleTitle>Confirmar Senha</StyleTitle>
+            <StyleTitle>Confirmar Senha*</StyleTitle>
             <input
               type="password"
               name="confirmarSenha"
@@ -421,11 +341,16 @@ function EmpresaForm({ className = "" }) {
           <p className="font-medium text-gray-500">
             selecione até 5 causas principais
           </p>
+
+          {/* Alerta sobre o erro na escolha das ods ">5" */}
+          {errors.ods && (
+            <p className="mt-1 text-sm text-red-600">{errors.ods} </p>
+          )}
         </div>
 
         {/* recebe as informações ods */}
-        <div className="max-h-md max-w-full p-6 bg-white rounded-md shadow">
-          <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
+        <div className="max-h-md max-w-full bg-white rounded-md shadow">
+          <div className="grid grid-cols-2 md:grid-cols-9 gap-3">
             {OdsImageOptions.map((option) => (
               <OdsImages
                 key={option.id}
@@ -466,7 +391,7 @@ function EmpresaForm({ className = "" }) {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-400 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
           >
             {isSubmitting ? "Enviando..." : "Cadastrar Empresa"}
           </button>
