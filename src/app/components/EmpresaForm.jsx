@@ -1,6 +1,7 @@
 "use client";
 import StyleFillable from "./StyleFillable";
 import StyleTitle from "./styles/StyleTitle";
+import StyleInput from "./StyleInput";
 import OdsImages from "./OdsImages";
 import { useState } from "react";
 
@@ -171,35 +172,25 @@ function EmpresaForm({ className = "" }) {
         <StyleFillable>
           <div>
             <StyleTitle>Nome fantasia da empresa *</StyleTitle>
-            <input
+            <StyleInput
               type="text"
               name="nomeEmpresa"
               value={formData.nomeEmpresa}
               onChange={handleChange}
               placeholder="Nome como a empresa é conhecida publicamente"
-              className={`mt-1 block w-full rounded-md border-gray-300 text-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2 border ${
-                errors.nomeEmpresa ? "border-red-500" : ""
-              }`}
+              errors={errors.nomeEmpresa}
             />
-            {errors.nomeEmpresa && (
-              <p className="mt-1 text-sm text-red-600">{errors.nomeEmpresa}</p>
-            )}
           </div>
 
           <div>
             <StyleTitle>CNPJ *</StyleTitle>
-            <input
+            <StyleInput
               type="text"
               value={formData.cnpj}
               onChange={handleCNPJChange}
               placeholder="99.999.999/9999-99"
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border ${
-                errors.cnpj ? "border-red-500" : ""
-              }`}
+              errors={errors.cnpj}
             />
-            {errors.cnpj && (
-              <p className="mt-1 text-sm text-red-600">{errors.cnpj}</p>
-            )}
           </div>
         </StyleFillable>
 
