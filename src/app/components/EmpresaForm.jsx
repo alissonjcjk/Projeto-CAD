@@ -1,7 +1,7 @@
 "use client";
-import StyleFillable from "./StyleFillable";
+import StyleFillable from "./styles/StyleFillable";
 import StyleTitle from "./styles/StyleTitle";
-import StyleInput from "./StyleInput";
+import StyleInput from "./styles/StyleInput";
 import OdsImages from "./OdsImages";
 import { useState } from "react";
 
@@ -15,9 +15,9 @@ const OdsImageOptions = Array.from({ length: 17 }, (_, i) => ({
   require: true,
 }));
 
-const initialODSState = OdsImageOptions.reduce((acc, option) => {
-  acc[option.name] = false;
-  return acc;
+const initialODSState = OdsImageOptions.reduce((acumulator, option) => {
+  acumulator[option.name] = false;
+  return acumulator;
 });
 
 function EmpresaForm({ className = "" }) {
@@ -198,47 +198,36 @@ function EmpresaForm({ className = "" }) {
         <StyleFillable>
           <div>
             <StyleTitle>Email corporativo de contato *</StyleTitle>
-            <input
+            <StyleInput
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="Ex: ana.souza@empresa.com"
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border ${
-                errors.email ? "border-red-500" : ""
-              }`}
+              errors={errors.email}
             />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-            )}
           </div>
 
           <div>
             <StyleTitle>Telefone *</StyleTitle>
-            <input
+            <StyleInput
               type="text"
               value={formData.telefone}
               onChange={handleTelefoneChange}
               placeholder="(81)9 9999-9999"
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border ${
-                errors.telefone ? "border-red-500" : ""
-              }`}
+              errors={errors.telefone}
             />
-            {errors.telefone && (
-              <p className="mt-1 text-sm text-red-600">{errors.telefone}</p>
-            )}
           </div>
         </StyleFillable>
 
         {/* Endereço */}
         <div>
           <StyleTitle>Razão social (opcional)</StyleTitle>
-          <input
+          <StyleInput
             type="text"
             name="razao"
             value={formData.razao}
             onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
           />
         </div>
 
@@ -279,12 +268,11 @@ function EmpresaForm({ className = "" }) {
 
           <div>
             <StyleTitle>Responsável</StyleTitle>
-            <input
+            <StyleInput
               type="text"
               name="responsavel"
               value={formData.responsavel}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border"
             />
           </div>
         </div>
@@ -293,36 +281,24 @@ function EmpresaForm({ className = "" }) {
         <StyleFillable>
           <div>
             <StyleTitle>Senha*</StyleTitle>
-            <input
+            <StyleInput
               type="password"
               name="senha"
               value={formData.senha}
               onChange={handleChange}
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border ${
-                errors.senha ? "border-red-500" : ""
-              }`}
+              errors={errors.senha}
             />
-            {errors.senha && (
-              <p className="mt-1 text-sm text-red-600">{errors.senha}</p>
-            )}
           </div>
 
           <div>
             <StyleTitle>Confirmar Senha*</StyleTitle>
-            <input
+            <StyleInput
               type="password"
               name="confirmarSenha"
               value={formData.confirmarSenha}
               onChange={handleChange}
-              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600 text-sm p-2 border ${
-                errors.confirmarSenha ? "border-red-500" : ""
-              }`}
+              errors={errors.confirmarSenha}
             />
-            {errors.confirmarSenha && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.confirmarSenha}
-              </p>
-            )}
           </div>
         </StyleFillable>
         <div>

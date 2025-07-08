@@ -10,16 +10,14 @@ const OdsImages = ({
   disabled,
   className,
   imageUrl,
-  imageAlt = "Ícone", // Texto alternativo para a imagem
+  imageAlt = "Ícone",
 }) => {
   return (
     <div className={`flex items-start ${className}`}>
-      {/* Container da imagem */}
       <div className="mr-3 flex-shrink-0">
-        <img src={imageUrl} alt={imageAlt} className="h-15 w-15 object-cover" />
+        <img src={imageUrl} alt={imageAlt} className="h-13 w-13 object-cover" />
       </div>
 
-      {/* Checkbox e label */}
       <div className="flex items-center">
         <div className="flex items-center h-5">
           <input
