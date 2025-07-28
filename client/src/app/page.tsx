@@ -36,7 +36,7 @@ export default function Home() {
               Formulário de Empresas
             </button>
           </Link>
-          
+
           {/* Botão único para entrar */}
           <Link href="/entrar">
             <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition w-full sm:w-auto text-center">
@@ -44,9 +44,10 @@ export default function Home() {
             </button>
           </Link>
         </div>
-        
+
         {ativo === "acoes" && <Modalcriterios nivel="Ouro" />}
         {ativo === "selos" && <SelosPage />}
+        {ativo === "minhas doacoes" && <DoacoesPage />}
       </div>
 
       <Rodape />
