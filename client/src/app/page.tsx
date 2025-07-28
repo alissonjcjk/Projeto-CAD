@@ -11,6 +11,7 @@ import Cardcadastrado from "@/components/card-acao-cadastrada";
 import Modalcontatos from "@/components/modal-contato";
 import Modalcriterios from "@/components/modal-criterios";
 import SelosPage from "./selospage";
+// import DoacoesPage from "./doacoespage/page";
 
 export default function Home() {
   const [ativo, setAtivo] = useState("acoes");
