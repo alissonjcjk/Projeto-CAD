@@ -1,22 +1,22 @@
-// page.tsx
 "use client";
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/navbar";
 import Rodape from "@/components/rodape";
-import Cardacao from "@/components/card-de-acao";
-import Cardcontatos from "@/components/card-cadastrar-doacao";
+import Cardacao from "@/components/card-de-acao"; 
+import Cardcontatos from "@/components/card-cadastrar-doacao"; 
 import { useState } from "react";
-import Cardcadastrado from "@/components/card-acao-cadastrada";
-import Modalcontatos from "@/components/modal-contato";
+import Cardcadastrado from "@/components/card-acao-cadastrada"; 
+import Modalcontatos from "@/components/modal-contato"; 
 import Modalcriterios from "@/components/modal-criterios";
-import SelosPage from "./selospage";
-// import DoacoesPage from "./doacoespage/page";
+import SelosPage from "./selospage/page";
+import DoacoesPage from "./doacoespage/page";
+
 
 export default function Home() {
   const [ativo, setAtivo] = useState("acoes");
-  const [ativocontato, setAtivoContato] = useState("acoes");
-  const [mostrarModal, setMostrarModal] = useState(false);
+  const [ativocontato, setAtivoContato] = useState("acoes"); 
+  const [mostrarModal, setMostrarModal] = useState(false); 
 
   function abrirModal() {
     setMostrarModal(true);
@@ -45,10 +45,63 @@ export default function Home() {
             </button>
           </Link>
         </div>
+        {/* <Cardacao
+      <div className="flex-grow bg-gray-100"> 
 
-        {ativo === "acoes" && <Modalcriterios nivel="Ouro" />}
-        {ativo === "selos" && <SelosPage />}
-        {ativo === "minhas doacoes" && <DoacoesPage />}
+        {/* O conteúdo dinâmico da página */}
+        {ativo === "acoes" && (
+          <Modalcriterios nivel="Ouro" />
+        )}
+        {ativo === "selos" && (
+          <SelosPage />
+        )}
+        {ativo === "minhas doacoes" && (
+          <DoacoesPage />
+        )}
+
+        {/*
+        <Cardacao
+          nomeacao="Projeto Esperança"
+          descricao="A ONG atua com comunidades vulneráveis promovendo educação e saúde."
+          ods1="mulheres"
+          ods2="combate a fome"
+          ods3="animais"
+          ods4="ODS"
+          nomedaong="Instituto Viver Bem"
+          onEntrarContato={abrirModal}
+        />
+
+        <Cardcontatos
+          nomeacao="Campanha Inverno Solidário"
+          descricao="Ajude famílias em situação de vulnerabilidade com roupas e cobertores."
+          email="contato@ongsocial.org"
+          fone="(41) 99999-0000"
+          qtdacoescadastradas="12"
+          nomedaong="ONG Social Brasil"
+          ativocontato={ativocontato}
+        />
+
+        <Cardcadastrado
+          nomeacao="Campanha Inverno Solidário"
+          descricao="Ajude famílias com roupas e cobertores durante o inverno."
+          email="contato@ongsocial.org"
+          fone="(41) 99999-0000"
+          qtdacoescadastradas="12"
+          nomedaong="ONG Social Brasil"
+        />
+
+        {mostrarModal && (
+          <div className="fixed inset-0 bg-[rgba(0,0,0,0.4)] transition-opacity duration-300 flex justify-center items-center z-50 ">
+            <Modalcontatos
+              nomedaong="Instituto Viver Bem"
+              nomeacao="Projeto Esperança"
+              emailong="contato@viverbem.org"
+              numeroong="(41) 99999-9999"
+              onEntrarContato={fecharModal}
+            />
+          </div>
+        )}
+        */}
       </div>
 
       <Rodape />
