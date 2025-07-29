@@ -31,10 +31,17 @@ export default function Home() {
       <Navbar ativo={ativo} setAtivo={setAtivo} />
 
       <div className="flex-grow flex flex-col items-center">
-        <div className="flex justify-center mt-6">
-          <Link href="/formulario-empresas">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-              Ir para o Formulário de Empresas
+        <div className="flex flex-col sm:flex-row justify-center mt-6 gap-4 p-4">
+          <Link href="/auth/pages/formulario-empresas">
+            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition w-full sm:w-auto text-center">
+              Formulário de Empresas
+            </button>
+          </Link>
+
+          {/* Botão único para entrar */}
+          <Link href="/entrar">
+            <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition w-full sm:w-auto text-center">
+              Entrar
             </button>
           </Link>
         </div>
