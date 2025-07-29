@@ -48,3 +48,36 @@ export { setapbaixo };
 
 import downloadicon from "./downloadicon.svg";
 export { downloadicon };
+
+import Bronze from "./bronze.svg";
+export { Bronze };
+
+import Fechar from "./fechar.svg";
+export { Fechar };
+
+import Olho from "./olho.svg";
+export { Olho };
+
+import Download from "./download.svg";
+export { Download };
+
+import paperclip from "./paperclip.svg";
+export { paperclip };
+
+import cloudupload from "./cloudupload.svg";
+export { cloudupload };
+
+import ok from "./ok.svg";
+export { ok };
+
+import problem from "./problem.svg";
+export { problem };
+
+import loading from "./loading.svg";
+export { loading };
+
+import close from "./close.svg";
+export { close };
+
+import lupa from "./lupa.svg";
+export { lupa };
