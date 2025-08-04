@@ -49,9 +49,6 @@ export { setapbaixo };
 import downloadicon from "./downloadicon.svg";
 export { downloadicon };
 
-import Bronze from "./bronze.svg";
-export { Bronze };
-
 import Fechar from "./fechar.svg";
 export { Fechar };
 
@@ -81,3 +78,6 @@ export { close };
 
 import lupa from "./lupa.svg";
 export { lupa };
+
+import portasair from "./portasair.svg";
+export { portasair };
