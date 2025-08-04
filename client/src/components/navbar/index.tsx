@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { logoprefeitura } from "@/assets";
+import { logoprefeitura, portasair } from "@/assets";
 import Image from "next/image";
 
 type NavbarProps = {
@@ -41,6 +41,16 @@ export default function Navbar({ ativo }: NavbarProps) {
         >
           Selos
           {ativo === "selos" && (
+            <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white" />
+          )}
+        </div>
+
+        <div
+          className="relative cursor-pointer font-bold pb-1 border-b-2 border-transparent hover:border-white transition-colors duration-200"
+          onClick={() => router.push("")}
+        >
+          <Image src={portasair} alt="" />
+          {ativo === "sair" && (
             <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white" />
           )}
         </div>
