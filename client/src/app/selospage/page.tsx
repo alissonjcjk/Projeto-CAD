@@ -62,24 +62,26 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex-grow flex justify-center items-center">
-        {mostrarcriterios == "bronzemedal" && (
-          <div className="fixed inset-0 bg-[rgba(0,0,0,0.4)] transition-opacity duration-300 flex justify-center items-center z-50 ">
-            <Modalcriterios nivel="bronzemedal" fecharmodal={Setcriterios} />
-          </div>
-        )}
+      <div>
+        <div className="flex-grow flex justify-center items-center">
+          {mostrarcriterios == "bronzemedal" && (
+            <div className="fixed inset-0 bg-[rgba(0,0,0,0.4)] transition-opacity duration-300 flex justify-center items-center z-50 ">
+              <Modalcriterios nivel="bronzemedal" fecharmodal={Setcriterios} />
+            </div>
+          )}
 
-        {mostrarcriterios == "goldenmedal" && (
-          <div className="fixed inset-0 bg-[rgba(0,0,0,0.4)] transition-opacity duration-300 flex justify-center items-center z-50 ">
-            <Modalcriterios nivel="goldenmedal" fecharmodal={Setcriterios} />
-          </div>
-        )}
+          {mostrarcriterios == "goldenmedal" && (
+            <div className="fixed inset-0 bg-[rgba(0,0,0,0.4)] transition-opacity duration-300 flex justify-center items-center z-50 ">
+              <Modalcriterios nivel="goldenmedal" fecharmodal={Setcriterios} />
+            </div>
+          )}
 
-        {mostrarcriterios == "silvermedal" && (
-          <div className="fixed inset-0 bg-[rgba(0,0,0,0.4)] transition-opacity duration-300 flex justify-center items-center z-50 ">
-            <Modalcriterios nivel="silvermedal" fecharmodal={Setcriterios} />
-          </div>
-        )}
+          {mostrarcriterios == "silvermedal" && (
+            <div className="fixed inset-0 bg-[rgba(0,0,0,0.4)] transition-opacity duration-300 flex justify-center items-center z-50 ">
+              <Modalcriterios nivel="silvermedal" fecharmodal={Setcriterios} />
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="h-[100px]" />
