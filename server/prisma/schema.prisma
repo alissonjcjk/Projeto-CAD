@@ -91,3 +91,12 @@ model Selo {
 
   criterios  Criterio[]
 }
+
+model File {
+  id         String   @id @default(uuid())
+  storedName String
+  mimetype   String
+  size       Int
+  path       String
+  createdAt  DateTime @default(now())
+}
