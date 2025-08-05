@@ -98,5 +98,6 @@ model File {
   mimetype   String
   size       Int
   path       String
+  status     String
   createdAt  DateTime @default(now())
 }
