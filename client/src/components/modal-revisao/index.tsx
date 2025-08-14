@@ -17,7 +17,6 @@ export default function ModalRevisao({ isOpen, onClose, auditoria }: ModalRevisa
   
   if (!auditoria) return null;
   
-  const formattedDate = format(new Date(auditoria.dataDoacao), 'dd/MM/yyyy');
   
   const handleClose = () => {
     setIsReproving(false);

@@ -1,4 +1,3 @@
-import { logoamassada } from "@/assets";
 import { predio } from "@/assets";
 import Image from "next/image";
 

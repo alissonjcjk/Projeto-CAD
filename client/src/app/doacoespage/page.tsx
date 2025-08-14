@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import Cardcontatos from "@/components/card-cadastrar-doacao";
 import Cardcadastrado from "@/components/card-acao-cadastrada";
 import CadastroDoacao from "@/components/formulario-doacao";
@@ -8,20 +7,13 @@ import { useState } from "react";
 import Navbar from "@/components/navbar";
 import Rodape from "@/components/rodape";
 export default function DoacoesPage() {
-  const [ativocontato, setAtivoContato] = useState("acoes");
-  const [mostrarModal, setMostrarModal] = useState(false);
+  const [ativocontato] = useState("acoes");
   const [showCadastroDoacaoSidebar, setShowCadastroDoacaoSidebar] =
     useState(false);
   const [selectedOngName, setSelectedOngName] = useState("");
   const [selectedActionName, setSelectedActionName] = useState("");
 
-  function abrirModal() {
-    setMostrarModal(true);
-  }
-
-  function fecharModal() {
-    setMostrarModal(false);
-  }
+  
 
   function handleOpenCadastro(ongName: string, actionName: string) {
     setSelectedOngName(ongName);

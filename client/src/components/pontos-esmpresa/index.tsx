@@ -1,5 +1,4 @@
 "use client";
-import { logoamassada } from "@/assets";
 import Image from "next/image";
 import { goldenmedal, silvermedal, bronzemedal } from "@/assets";
 import { useState } from "react";
