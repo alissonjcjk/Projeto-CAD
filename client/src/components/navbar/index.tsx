@@ -26,30 +26,10 @@ export default function Navbar({ ativo }: NavbarProps) {
         ) : (
           <>
             <div
-              className="relative cursor-pointer font-bold pb-1 border-b-2 border-transparent hover:border-white transition-colors duration-200"
-              onClick={() => router.push("/acoes")}
-            >
-              Ações
-              {ativo === "acoes" && (
-                <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white" />
-              )}
-            </div>
-
-            <div
-              className="relative cursor-pointer font-bold pb-1 border-b-2 border-transparent hover:border-white transition-colors duration-200"
+              className="relative cursor-pointer font-extrabold pb-1 border-b-2 border-transparent hover:border-white transition-colors duration-200"
               onClick={() => router.push("/doacoespage")}
             >
-              Minhas doações
-              {ativo === "minhas doacoes" && (
-                <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white" />
-              )}
-            </div>
-
-            <div
-              className="relative cursor-pointer font-bold pb-1 border-b-2 border-transparent hover:border-white transition-colors duration-200"
-              onClick={() => router.push("/selospage")}
-            >
-              Selos
+              Vantagens para sua empresa ou ONG
               {ativo === "selos" && (
                 <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white" />
               )}
