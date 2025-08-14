@@ -9,7 +9,7 @@ interface MockFile {
 const LOCAL_STORAGE_KEY = 'uploadedFilesMock'; // Chave para o localStorage
 
 // Inicializa uploadedFiles lendo do localStorage, ou com um array vazio
-let uploadedFiles: MockFile[] = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+const uploadedFiles: MockFile[] = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
 
 
 export const saveFile = (file: File): Promise<{ success: true; fileName: string }> => {

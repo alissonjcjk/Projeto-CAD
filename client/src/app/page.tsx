@@ -27,7 +27,7 @@ export default function Home() {
       setFade(false); // Inicia o fade out
 
       setTimeout(() => {
-        setCurrentImage((prev) => (prev + 1) % images.length);
+        setCurrentImage((prev) => (prev + 1));
         setFade(true); // Inicia o fade in
       }, 500); // Tempo do fade out antes de trocar a imagem
     }, 3000);

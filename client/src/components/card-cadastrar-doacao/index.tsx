@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import { predio, mail, fone, maozinha } from "@/assets";
-import { Dispatch, SetStateAction } from "react";
 
 export interface Cardcontatosprops {
   nomeacao: string;
@@ -16,7 +15,6 @@ export interface Cardcontatosprops {
 }
 
 export default function Cardcontatos(props: Cardcontatosprops) {
-  const estaAtivo = props.ativocontato === props.nomeacao;
 
   return (
     <div className="w-[360px] h-[255px] flex flex-col bg-white rounded-md shadow p-4 font-sans text-[#1B2029]">
