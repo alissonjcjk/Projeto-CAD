@@ -1,7 +1,24 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+
+const Button = ({ children, variant, className, onClick }) => {
+  const baseStyle = "px-4 py-2 rounded transition-colors";
+  const variants = {
+    outline: "border border-gray-300 hover:bg-gray-50",
+    ghost: "hover:bg-gray-100",
+    default: "bg-blue-500 text-white hover:bg-blue-600"
+  };
+  
+  return (
+    <button
+      className={`${baseStyle} ${variants[variant] || variants.default} ${className}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+};
 
 export default function OngDashboard() {
   const router = useRouter();
