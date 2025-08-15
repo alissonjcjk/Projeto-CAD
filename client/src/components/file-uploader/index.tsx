@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { saveFile } from '@/data'; 
-import Image from 'next/image';
-import { cloudupload, paperclip, ok, problem, loading, close } from '@/assets'; 
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { saveFile } from "@/data";
+import Image from "next/image";
+import { cloudupload, paperclip, ok, problem, loading, close } from "@/assets";
 
-type UploadStatus = 'idle' | 'loading' | 'error' | 'success';
+type UploadStatus = "idle" | "loading" | "error" | "success";
 
 interface FileUploadInputProps {
   label: string;
@@ -12,15 +12,20 @@ interface FileUploadInputProps {
   maxFiles?: number;
 }
 
-const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFilesAttached, maxFiles = 5 }) => {
+const FileUploadInput: React.FC<FileUploadInputProps> = ({
+  label,
+  subtitle,
+  onFilesAttached,
+  maxFiles = 5,
+}) => {
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
-  const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
+  const [uploadStatus, setUploadStatus] = useState<UploadStatus>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const successTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const errorTimerRef = useRef<NodeJS.Timeout | null>(null); 
-  const isFileInputOpenRef = useRef(false); 
+  const errorTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isFileInputOpenRef = useRef(false);
 
   // Effect para notificar o componente pai sobre mudanças nos arquivos
   useEffect(() => {
@@ -33,7 +38,7 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
       if (successTimerRef.current) {
         clearTimeout(successTimerRef.current);
       }
-      if (errorTimerRef.current) { 
+      if (errorTimerRef.current) {
         clearTimeout(errorTimerRef.current);
       }
     };
@@ -42,121 +47,144 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
   // Effect para gerenciar o estado 'loading' ao abrir janela de arquvios
   useEffect(() => {
     const handleWindowFocus = () => {
-      if (isFileInputOpenRef.current && uploadStatus === 'loading' && !errorMessage) {
+      if (
+        isFileInputOpenRef.current &&
+        uploadStatus === "loading" &&
+        !errorMessage
+      ) {
         setTimeout(() => {
-          if (uploadStatus === 'loading' && !errorMessage) {
-            setUploadStatus('idle'); 
+          if (uploadStatus === "loading" && !errorMessage) {
+            setUploadStatus("idle");
           }
           isFileInputOpenRef.current = false;
-        }, 50); 
+        }, 50);
       }
     };
 
-    window.addEventListener('focus', handleWindowFocus);
+    window.addEventListener("focus", handleWindowFocus);
     return () => {
-      window.removeEventListener('focus', handleWindowFocus);
+      window.removeEventListener("focus", handleWindowFocus);
     };
-  }, [uploadStatus, errorMessage]); 
+  }, [uploadStatus, errorMessage]);
 
+  const handleUploadAndSave = useCallback(
+    async (file: File) => {
+      if (successTimerRef.current) {
+        clearTimeout(successTimerRef.current);
+        successTimerRef.current = null;
+      }
+      if (errorTimerRef.current) {
+        clearTimeout(errorTimerRef.current);
+        errorTimerRef.current = null;
+      }
 
-  const handleUploadAndSave = useCallback(async (file: File) => {
-    if (successTimerRef.current) {
-      clearTimeout(successTimerRef.current);
-      successTimerRef.current = null;
-    }
-    if (errorTimerRef.current) { 
-      clearTimeout(errorTimerRef.current);
-      errorTimerRef.current = null;
-    }
-
-    setUploadStatus('loading'); 
-    setErrorMessage(null);
-
-    // 1. Verificar o limite de arquivos antes de qualquer outra validação
-    if (attachedFiles.length >= maxFiles) {
-        setUploadStatus('error');
-        setErrorMessage(`Limite de ${maxFiles} arquivos atingido.`);
-        errorTimerRef.current = setTimeout(() => {
-            setUploadStatus('idle');
-            setErrorMessage(null);
-        }, 2000); 
-        return; 
-    }
-
-    // 2. Verificar se o arquivo já existe na lista
-    const fileExists = attachedFiles.some(f => f.name === file.name && f.size === file.size);
-    if (fileExists) {
-        setUploadStatus('error');
-        setErrorMessage(`Arquivo já selecionado.`); 
-        errorTimerRef.current = setTimeout(() => {
-            setUploadStatus('idle');
-            setErrorMessage(null);
-        }, 2000); 
-        return; 
-    }
-    
-    try {
-      await saveFile(file); // Simulação do upload (mock)
-
-      setAttachedFiles((prevFiles) => {
-        if (!prevFiles.some(f => f.name === file.name && f.size === file.size) && prevFiles.length < maxFiles) {
-          return [...prevFiles, file];
-        }
-        return prevFiles;
-      });
-
-      setUploadStatus('success');
+      setUploadStatus("loading");
       setErrorMessage(null);
 
-      successTimerRef.current = setTimeout(() => {
-        setUploadStatus('idle');
+      // 1. Verificar o limite de arquivos antes de qualquer outra validação
+      if (attachedFiles.length >= maxFiles) {
+        setUploadStatus("error");
+        setErrorMessage(`Limite de ${maxFiles} arquivos atingido.`);
+        errorTimerRef.current = setTimeout(() => {
+          setUploadStatus("idle");
+          setErrorMessage(null);
+        }, 2000);
+        return;
+      }
+
+      // 2. Verificar se o arquivo já existe na lista
+      const fileExists = attachedFiles.some(
+        (f) => f.name === file.name && f.size === file.size
+      );
+      if (fileExists) {
+        setUploadStatus("error");
+        setErrorMessage(`Arquivo já selecionado.`);
+        errorTimerRef.current = setTimeout(() => {
+          setUploadStatus("idle");
+          setErrorMessage(null);
+        }, 2000);
+        return;
+      }
+
+      try {
+        await saveFile(file); // Simulação do upload (mock)
+
+        setAttachedFiles((prevFiles) => {
+          if (
+            !prevFiles.some(
+              (f) => f.name === file.name && f.size === file.size
+            ) &&
+            prevFiles.length < maxFiles
+          ) {
+            return [...prevFiles, file];
+          }
+          return prevFiles;
+        });
+
+        setUploadStatus("success");
         setErrorMessage(null);
-      }, 2000);
 
-    } catch (error: any) {
-      console.error("Erro inesperado no upload/salvamento do arquivo:", error);
-      setUploadStatus('error');
-      setErrorMessage(error.message || 'Falha inesperada ao anexar o arquivo.');
-      errorTimerRef.current = setTimeout(() => {
-        setUploadStatus('idle');
-        setErrorMessage(null);
-      }, 2000); 
-    }
-  }, [attachedFiles, maxFiles]); 
+        successTimerRef.current = setTimeout(() => {
+          setUploadStatus("idle");
+          setErrorMessage(null);
+        }, 2000);
+      } catch (error: unknown) {
+        const err = error instanceof Error ? error : new Error(String(error));
+        console.error("Erro inesperado no upload/salvamento do arquivo:", err);
+        setUploadStatus("error");
+        setErrorMessage(err.message || "Falha inesperada ao anexar o arquivo.");
+        errorTimerRef.current = setTimeout(() => {
+          setUploadStatus("idle");
+          setErrorMessage(null);
+        }, 2000);
+      }
+    },
+    [attachedFiles, maxFiles]
+  );
 
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    isFileInputOpenRef.current = false;
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    isFileInputOpenRef.current = false; 
-    
     if (event.target.files && event.target.files.length > 0) {
-        const file = event.target.files[0];
-        await handleUploadAndSave(file);
+      const file = event.target.files[0];
+      await handleUploadAndSave(file);
     } else {
-        if (uploadStatus === 'loading' && !errorMessage) {
-            setUploadStatus('idle');
-            setErrorMessage(null);
-        }
+      if (uploadStatus === "loading" && !errorMessage) {
+        setUploadStatus("idle");
+        setErrorMessage(null);
+      }
     }
-    event.target.value = ''; 
+    event.target.value = "";
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     // Quando começa o drag, pode ir para loading se não estiver já em um estado final
-    if (uploadStatus === 'idle' || uploadStatus === 'success' || uploadStatus === 'error') {
-      setUploadStatus('loading');
+    if (
+      uploadStatus === "idle" ||
+      uploadStatus === "success" ||
+      uploadStatus === "error"
+    ) {
+      setUploadStatus("loading");
       setErrorMessage(null);
     }
-    isFileInputOpenRef.current = true; 
+    isFileInputOpenRef.current = true;
   };
- 
+
   // Para caso de desistência de drop
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault(); 
-    if (isFileInputOpenRef.current && uploadStatus === 'loading' && attachedFiles.length === 0 && !errorMessage) {
-        setUploadStatus('idle');
-        setErrorMessage(null);
-        isFileInputOpenRef.current = false; 
+    event.preventDefault();
+    if (
+      isFileInputOpenRef.current &&
+      uploadStatus === "loading" &&
+      attachedFiles.length === 0 &&
+      !errorMessage
+    ) {
+      setUploadStatus("idle");
+      setErrorMessage(null);
+      isFileInputOpenRef.current = false;
     }
   };
 
@@ -164,8 +192,8 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
     event.preventDefault();
     isFileInputOpenRef.current = false; // O drop aconteceu, então a interação com o input terminou
 
-    if (uploadStatus !== 'loading') { 
-      setUploadStatus('loading');
+    if (uploadStatus !== "loading") {
+      setUploadStatus("loading");
       setErrorMessage(null);
     }
 
@@ -175,8 +203,8 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
     } else {
       // Se não houver arquivos no drop (e.g., arrastou algo que não é arquivo),
       // volta para idle (se não houver erro anterior ou arquivos)
-      if (uploadStatus === 'loading' && !errorMessage) {
-        setUploadStatus('idle');
+      if (uploadStatus === "loading" && !errorMessage) {
+        setUploadStatus("idle");
         setErrorMessage(null);
       }
     }
@@ -188,7 +216,7 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
       clearTimeout(successTimerRef.current);
       successTimerRef.current = null;
     }
-    if (errorTimerRef.current) { 
+    if (errorTimerRef.current) {
       clearTimeout(errorTimerRef.current);
       errorTimerRef.current = null;
     }
@@ -200,8 +228,12 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
       // Se não há mais arquivos, volta para idle.
       // Se era erro, limpa o erro e volta para idle.
       // Caso contrário, volta para idle.
-      if (newFiles.length === 0 || uploadStatus === 'error' || uploadStatus === 'success') {
-        setUploadStatus('idle');
+      if (
+        newFiles.length === 0 ||
+        uploadStatus === "error" ||
+        uploadStatus === "success"
+      ) {
+        setUploadStatus("idle");
         setErrorMessage(null);
       }
       // Se o status já era 'idle' antes da remoção, ele continua 'idle'.
@@ -212,25 +244,25 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
 
   const handleDivClick = () => {
     if (attachedFiles.length < maxFiles) {
-      setUploadStatus('loading'); // Define para loading antes de abrir o seletor
+      setUploadStatus("loading"); // Define para loading antes de abrir o seletor
       setErrorMessage(null);
       isFileInputOpenRef.current = true; // Marca que o gerenciador de arquivos está prestes a abrir
       fileInputRef.current?.click();
     } else {
-      setUploadStatus('error');
+      setUploadStatus("error");
       setErrorMessage(`Limite de ${maxFiles} arquivos atingido.`);
       errorTimerRef.current = setTimeout(() => {
-        setUploadStatus('idle');
+        setUploadStatus("idle");
         setErrorMessage(null);
       }, 2000);
     }
   };
 
   const borderColorClass = {
-    'idle': 'border-[#89BAFF]',
-    'loading': 'border-[#89BAFF]',
-    'error': 'border-[#DB4437]',
-    'success': 'border-[#11B163]'
+    idle: "border-[#89BAFF]",
+    loading: "border-[#89BAFF]",
+    error: "border-[#DB4437]",
+    success: "border-[#11B163]",
   }[uploadStatus];
 
   const mainContent = () => {
@@ -250,7 +282,7 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
     }
 
     switch (uploadStatus) {
-      case 'idle':
+      case "idle":
         return (
           <>
             <Image
@@ -260,10 +292,12 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
               height={20}
               className="mx-auto mb-2"
             />
-            <p className="mt-2 text-sm text-center">Arraste e solte ou selecione o arquivo</p>
+            <p className="mt-2 text-sm text-center">
+              Arraste e solte ou selecione o arquivo
+            </p>
           </>
         );
-      case 'loading':
+      case "loading":
         return (
           <>
             <Image
@@ -276,7 +310,7 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
             <p className="mt-2 text-sm text-center">Carregando...</p>
           </>
         );
-      case 'success':
+      case "success":
         return (
           <>
             <Image
@@ -296,13 +330,16 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
 
   return (
     <div className="mb-4">
-      <label htmlFor="file-upload" className="block text-sm font-bold text-gray-700">
+      <label
+        htmlFor="file-upload"
+        className="block text-sm font-bold text-gray-700"
+      >
         {label}
       </label>
       {(subtitle || attachedFiles.length < maxFiles) && (
         <p className="text-gray-600 text-xs font-normal leading-tight mb-4">
           {subtitle}
-          {subtitle && attachedFiles.length < maxFiles && ' '}
+          {subtitle && attachedFiles.length < maxFiles && " "}
           {attachedFiles.length < maxFiles && (
             <span className="text-gray-500">
               ({`${attachedFiles.length}/${maxFiles}`})
@@ -316,11 +353,14 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
           flex flex-col items-center justify-center p-6
           border-2 border-dashed rounded-sm cursor-pointer
           ${borderColorClass} ${
-            uploadStatus === 'loading' ? 'bg-[#C4DCFF]' :
-            uploadStatus === 'error' ? 'bg-[#F2F5F7]' :
-            uploadStatus === 'success' ? 'bg-[#F2F5F7]' :
-            'bg-[#F2F5F7]'
-          }
+          uploadStatus === "loading"
+            ? "bg-[#C4DCFF]"
+            : uploadStatus === "error"
+            ? "bg-[#F2F5F7]"
+            : uploadStatus === "success"
+            ? "bg-[#F2F5F7]"
+            : "bg-[#F2F5F7]"
+        }
           transition-colors duration-200 ease-in-out
           py-4 px-6
           h-[136px]
@@ -358,7 +398,9 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({ label, subtitle, onFi
                   height={20}
                   className="mr-2"
                 />
-                <span className="flex-1 min-w-0 text-sm leading-5 text-[#3D3D3D] truncate">{file.name}</span>
+                <span className="flex-1 min-w-0 text-sm leading-5 text-[#3D3D3D] truncate">
+                  {file.name}
+                </span>
               </div>
               <button
                 onClick={(e) => {
