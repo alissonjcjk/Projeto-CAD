@@ -3,27 +3,30 @@ interface MockFile {
   size: number;
   type: string;
   lastModified: number;
-  uploadedAt: string; // da pra colocar aqui a url quando for fazer o back 
+  uploadedAt: string;
 }
 
-const LOCAL_STORAGE_KEY = 'uploadedFilesMock'; // Chave para o localStorage
+// Altere de 'let' para 'const' aqui
+const uploadedFiles: MockFile[] = []; // <-- Esta é a mudança principal
 
-// Inicializa uploadedFiles lendo do localStorage, ou com um array vazio
-const uploadedFiles: MockFile[] = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
-
-
-export const saveFile = (file: File): Promise<{ success: true; fileName: string }> => {
+export const saveFile = (
+  file: File
+): Promise<{ success: true; fileName: string }> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       uploadedFiles.push({
+        // Isso ainda funciona pois estamos modificando o array, não reatribuindo
         name: file.name,
         size: file.size,
         type: file.type,
         lastModified: file.lastModified,
-        uploadedAt: new Date().toISOString()
+        uploadedAt: new Date().toISOString(),
       });
-      console.log("Arquivo salvo (mock e localStorage):", file.name);
-      console.log("Todos os arquivos salvos (mock):", uploadedFiles.map(f => f.name));
+      console.log("Arquivo salvo (mock):", file.name);
+      console.log(
+        "Todos os arquivos salvos (mock):",
+        uploadedFiles.map((f) => f.name)
+      );
       resolve({ success: true, fileName: file.name });
     }, 500);
   });

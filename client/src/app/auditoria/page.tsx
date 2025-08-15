@@ -160,7 +160,7 @@ export default function AuditoriaPage() {
 
   return (
     <div className="bg-[#F5F5F5] flex flex-col min-h-screen">
-      <Navbar variant="logout" onLogout={() => alert("Saindo...")} />
+      <Navbar ativo="logout" />
 
       <main className="px-[52px] py-8 flex-grow gap-9">
         <div className="max-w-7xl py-8 flex flex-col gap-9">

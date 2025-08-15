@@ -27,7 +27,7 @@ export default function Home() {
       setFade(false); // Inicia o fade out
 
       setTimeout(() => {
-        setCurrentImage((prev) => (prev + 1));
+        setCurrentImage((prev) => prev + 1);
         setFade(true); // Inicia o fade in
       }, 500); // Tempo do fade out antes de trocar a imagem
     }, 3000);
@@ -103,7 +103,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Rodape className="relative z-10" />
+      <Rodape />
     </div>
   );
 }
